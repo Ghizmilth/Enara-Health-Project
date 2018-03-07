@@ -1,7 +1,8 @@
 var enara_api = config.ApiKey;
 var enara_account = config.Account;
-var userIdInput = "calvin";
+var userIdInput = "daja000001";
 var lastDatetime;
+var allDatesArr = [];
 var inBodyArr = [];
 
 $(document).ready(function() {
@@ -21,7 +22,9 @@ function fetchUserData() {
       Account: enara_account
     },
     success: function(userData) {
-      fetchInBodyData(userData);
+      allDatesArr = userData;
+      console.log(allDatesArr);
+      fetchInBodyData(allDatesArr);
     },
     error: function(error) {
       console.log("error");
@@ -30,52 +33,58 @@ function fetchUserData() {
 }
 
 //AJAX call to show json data from InBody
-function fetchInBodyData(userData) {
-  selectDatetime(userData);
+function fetchInBodyData(allDatesArr) {
+  userData = allDatesArr.slice(0, -1); // selectDatetime(userData);
   console.log("starting communication for Full InBody Data");
   console.log(userData);
-  // for (i = 0; i < userData.length; i++) {
-  $.ajax({
-    type: "POST",
-    url: "https://apiusa.lookinbody.com/InBody/GetFullInBodyDataByID",
-    contentType: "application/json",
-    data: JSON.stringify({ UserID: userIdInput, Datetimes: lastDatetime }),
-    headers: {
-      "API-KEY": enara_api,
-      Account: enara_account
-    },
-    success: function(data) {
-      // console.log(data);
-      // inBodyArr.push(data);
-      console.log(inBodyArr);
-      renderInBody(data);
-      initializePieChart(data);
-    },
-    error: function(error) {
-      console.log("error");
-    }
-  });
-  // }
+  for (i = 0; i <= allDatesArr.length; i++) {
+    $.ajax({
+      type: "POST",
+      url: "https://apiusa.lookinbody.com/InBody/GetFullInBodyDataByID",
+      contentType: "application/json",
+      data: JSON.stringify({ UserID: userIdInput, Datetimes: allDatesArr[i] }),
+      headers: {
+        "API-KEY": enara_api,
+        Account: enara_account
+      },
+      success: function(data) {
+        // console.log(data);
+        inBodyArr.push(data);
+        console.log(inBodyArr);
+        setTimeout(1000);
+        // renderInBody();
+        // initializePieChart(data);
+      },
+      error: function(error) {
+        console.log("error");
+      }
+    });
+  }
 }
+
+renderInBody();
 
 // userData[userData.length-2]
 
 // Selection of Datetime to use to get latest user info
-function selectDatetime(userData) {
-  if (userData.length > 3) {
-    lastDatetime = userData[userData.length - 2];
-  } else if (userData.length === 3) {
-    lastDatetime = userData[1];
-  } else {
-    lastDatetime = userData[0];
-  }
-}
+// function selectDatetime() {
+//   if (inBodyArr.length > 3) {
+//     lastDatetime = userData[userData.length - 1];
+//   } else if (userData.length === 3) {
+//     lastDatetime = userData[1];
+//   } else {
+//     lastDatetime = userData[0];
+//   }
+// }
 
 //Renders InBody data into DOM
-function renderInBody(InBodyData) {
-  $("h5.current-weight").html(InBodyData.Weight + " " + "lbs");
-  $("h5.fat-mass").html(InBodyData["BFM(BodyFatMass)"] + " " + "lbs");
-  $("h5.lean-mass").html(InBodyData["LBM(LeanBodyMass)"] + " " + "lbs");
+function renderInBody() {
+  console.log(inBodyArr[0]);
+  // $("h5.current-weight").html(
+  //   inBodyArr[inBodyArr.length - 1].Weight + " " + "lbs"
+  // );
+  // $("h5.fat-mass").html(InBodyData["BFM(BodyFatMass)"] + " " + "lbs");
+  // $("h5.lean-mass").html(InBodyData["LBM(LeanBodyMass)"] + " " + "lbs");
 }
 
 //CHARTS Section
