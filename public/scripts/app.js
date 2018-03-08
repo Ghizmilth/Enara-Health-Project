@@ -1,6 +1,6 @@
 var enara_api = config.ApiKey;
 var enara_account = config.Account;
-var userIdInput = "daja000001";
+var userIdInput = "calvin";
 var lastDatetime;
 var allDatesArr = [];
 var inBodyArr = [];
@@ -10,6 +10,7 @@ $(document).ready(function() {
   fetchUserData();
 });
 
+//Gets all Datetimes from users
 function fetchUserData() {
   console.log("Retrieving Date Times by ID");
   $.ajax({
@@ -24,6 +25,7 @@ function fetchUserData() {
     success: function(userData) {
       allDatesArr = userData;
       console.log(allDatesArr);
+      // storeInBody(allDatesArr);
       fetchInBodyData(allDatesArr);
     },
     error: function(error) {
@@ -32,28 +34,45 @@ function fetchUserData() {
   });
 }
 
+//Gets and stores all InBody data into variable
+function storeInBody(allDatesArr) {
+  for (i = 0; i < allDatesArr.length; i++) {
+    fetchInBodyData(allDatesArr);
+    console.log(i);
+  }
+  // if (i === allDatesArr.length) {
+  //   console.log("i finished counting");
+  // }
+  // renderInBody();
+}
+
 //AJAX call to show json data from InBody
 function fetchInBodyData(allDatesArr) {
-  userData = allDatesArr.slice(0, -1); // selectDatetime(userData);
+  // selectDatetime(userData);
   console.log("starting communication for Full InBody Data");
-  console.log(userData);
-  for (i = 0; i <= allDatesArr.length; i++) {
+  console.log(allDatesArr);
+  axCall(allDatesArr);
+}
+
+function axCall() {
+  var newDatesArr = allDatesArr.slice(0, -1);
+  for (i = 0; i < allDatesArr.length; i++) {
+    console.log(i);
     $.ajax({
       type: "POST",
       url: "https://apiusa.lookinbody.com/InBody/GetFullInBodyDataByID",
       contentType: "application/json",
-      data: JSON.stringify({ UserID: userIdInput, Datetimes: allDatesArr[i] }),
+      data: JSON.stringify({ UserID: userIdInput, Datetimes: newDatesArr[i] }),
       headers: {
         "API-KEY": enara_api,
         Account: enara_account
       },
-      success: function(data) {
-        // console.log(data);
-        inBodyArr.push(data);
+      success: function(inBodyData) {
+        // pushData(inBodyData);
+        inBodyArr.push(inBodyData);
         console.log(inBodyArr);
-        setTimeout(1000);
-        // renderInBody();
-        // initializePieChart(data);
+        renderInBody();
+        initializePieChart(inBodyData);
       },
       error: function(error) {
         console.log("error");
@@ -61,11 +80,7 @@ function fetchInBodyData(allDatesArr) {
     });
   }
 }
-
-renderInBody();
-
 // userData[userData.length-2]
-
 // Selection of Datetime to use to get latest user info
 // function selectDatetime() {
 //   if (inBodyArr.length > 3) {
@@ -77,14 +92,18 @@ renderInBody();
 //   }
 // }
 
-//Renders InBody data into DOM
 function renderInBody() {
-  console.log(inBodyArr[0]);
-  // $("h5.current-weight").html(
-  //   inBodyArr[inBodyArr.length - 1].Weight + " " + "lbs"
-  // );
-  // $("h5.fat-mass").html(InBodyData["BFM(BodyFatMass)"] + " " + "lbs");
-  // $("h5.lean-mass").html(InBodyData["LBM(LeanBodyMass)"] + " " + "lbs");
+  console.log(inBodyArr);
+  console.log(inBodyArr.length);
+  $("h5.current-weight").html(
+    inBodyArr[inBodyArr.length - 1].Weight + " " + "lbs"
+  );
+  $("h5.fat-mass").html(
+    inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] + " " + "lbs"
+  );
+  $("h5.lean-mass").html(
+    inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] + " " + "lbs"
+  );
 }
 
 //CHARTS Section
@@ -109,7 +128,6 @@ function initializePieChart(chartData) {
       };
     })
   });
-
   // Build the chart
   Highcharts.chart("pie-chart", {
     chart: {
@@ -143,14 +161,20 @@ function initializePieChart(chartData) {
       {
         name: "Brands",
         data: [
-          { name: "Fat mass", y: parseInt(chartData["BFM(BodyFatMass)"]) },
+          {
+            name: "Fat mass",
+            y: parseInt(chartData[chartData.length - 1]["BFM(BodyFatMass)"])
+          },
           // {
           //     name: 'Chrome',
           //     y: 24.03,
           //     sliced: true,
           //     selected: false
           // },
-          { name: "Lean Mass", y: parseInt(chartData["LBM(LeanBodyMass)"]) }
+          {
+            name: "Lean Mass",
+            y: parseInt(chartData[chartData.length - 1]["LBM(LeanBodyMass)"])
+          }
           // { name: 'Safari', y: 4.77 },
           // { name: 'Opera', y: 0.91 },
           // { name: 'Other', y: 0.2 }
