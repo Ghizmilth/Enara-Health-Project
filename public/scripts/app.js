@@ -189,8 +189,8 @@ function smmLineChart() {
         name: "Skeletal Muscle Mass",
         data: [
           parseInt(inBodyArr[0]["SMM(SkeletalMuscleMass)"]),
-          parseInt(inBodyArr[1]["SMM(SkeletalMuscleMass)"])
-          // inBodyArr[2]["SMM(SkeletalMuscleMass)"]
+          parseInt(inBodyArr[1]["SMM(SkeletalMuscleMass)"]),
+          parseInt(inBodyArr[2]["SMM(SkeletalMuscleMass)"])
         ]
       },
       {
@@ -201,6 +201,7 @@ function smmLineChart() {
         name: "Body Fat Mass",
         data: [
           parseInt(inBodyArr[0]["BFM(BodyFatMass)"]),
+          parseInt(inBodyArr[1]["BFM(BodyFatMass)"]),
           parseInt(inBodyArr[1]["BFM(BodyFatMass)"])
         ]
       },
