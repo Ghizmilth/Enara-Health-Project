@@ -1,6 +1,6 @@
+var userIdInput = "daja000001";
 var enara_api = config.ApiKey;
 var enara_account = config.Account;
-var userIdInput = "calvin";
 var lastDatetime;
 var allDatesArr = [];
 var inBodyArr = [];
@@ -24,7 +24,7 @@ $(document).ready(function() {
   fetchUserData();
   setTimeout(function() {
     renderInBody();
-  }, 1250);
+  }, 1300);
 });
 
 //Gets all Datetimes from users
@@ -52,15 +52,11 @@ function fetchUserData() {
 
 //AJAX call to show json data from InBody
 function fetchInBodyData(allDatesArr) {
-  // selectDatetime(userData);
   console.log("starting communication for Full InBody Data");
   var newDatesArr = allDatesArr.slice(0, -1);
-  // var count = 0;
   for (i = 0; i < allDatesArr.length; i++) {
-    // while (count < allDatesArr.length) {
-    // renderInBody();
-    // }
     $.ajax({
+      async: false,
       type: "POST",
       url: "https://apiusa.lookinbody.com/InBody/GetFullInBodyDataByID",
       contentType: "application/json",
@@ -73,11 +69,9 @@ function fetchInBodyData(allDatesArr) {
         Account: enara_account
       },
       success: function(inBodyData) {
-        // pushData(inBodyData);
         inBodyArr.push(inBodyData);
         console.log("successful call");
         console.log(inBodyArr);
-        // renderInBody();
       },
       error: function(error) {
         console.log("error");
@@ -91,7 +85,6 @@ function renderInBody() {
   console.log(inBodyArr);
   console.log(inBodyArr.length);
   console.log(inBodyArr[0].DateofRegistration);
-  // console.log(startDate);
   startDate = new Date(inBodyArr[0].DateofRegistration);
   $("h5.member-since").html(startDate.getFullYear());
   $("h5.current-weight").html(
@@ -109,6 +102,8 @@ function renderInBody() {
   compWeight();
   //COMPARE body fat mass progress
   compFat();
+  //COMPARE lean body Mass
+  compLean();
   //Get Body Fatt Mass Trend Values
   bfValues();
   //Get Right Arm Fat
@@ -131,8 +126,15 @@ function renderInBody() {
   leftArmChart();
   //Body Fat Mass Trend Chart
   bfTrend();
+  //COMPARE weight formula start to end
+  weightStart();
+  //COMPARE body fat start to end
+  fatStart();
+  //COMPARE lean mass start to end
+  leanStart();
 }
 
+//COMPARE weight
 function compWeight() {
   var comp = 0;
   if (inBodyArr.length > 2) {
@@ -140,22 +142,22 @@ function compWeight() {
       parseInt(inBodyArr[inBodyArr.length - 1].Weight) -
       parseInt(inBodyArr[inBodyArr.length - 2].Weight);
     if (comp >= 1) {
-      $("h7 .comp-weight").html("a Decrease of " + comp + "lbs");
+      $("h7 .comp-weight").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
       $("h7 .comp-weight").html("No changes ");
     } else {
       comp *= -1;
-      $("h7 .comp-weight").html("an Increase of " + comp + "lbs");
+      $("h7 .comp-weight").html("an Increase of " + comp + " lbs");
     }
   } else if (inBodyArr.length === 2) {
     comp = parseInt(inBodyArr[0].Weight) - parseInt(inBodyArr[1].Weight);
     if (comp >= 1) {
-      $("h7 .comp-weight").html("a Decrease of " + comp + "lbs");
+      $("h7 .comp-weight").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
       $("h7 .comp-weight").html("No changes ");
     } else {
       comp *= -1;
-      $("h7 .comp-weight").html("an Increase of " + comp + "lbs");
+      $("h7 .comp-weight").html("an Increase of " + comp + " lbs");
     }
   } else {
     if (inBodyArr.length === 1) {
@@ -164,6 +166,49 @@ function compWeight() {
   }
 }
 
+function weightStart() {
+  var comp2 =
+    parseInt(inBodyArr[0].Weight) -
+    parseInt(inBodyArr[inBodyArr.length - 1].Weight);
+  if (comp2 > 0) {
+    $("h7 .comp-weight-start").html("a Decrease of " + comp2 + " lbs");
+  } else if (comp2 === 0) {
+    $("h7 .comp-weight-start").html("No changes ");
+  } else {
+    comp2 *= -1;
+    $("h7 .comp-weight-start").html("an Increase of " + comp2 + " lbs");
+  }
+}
+
+function fatStart() {
+  var comp2 =
+    parseInt(inBodyArr[0]["BFM(BodyFatMass)"]) -
+    parseInt(inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"]);
+  if (comp2 > 0) {
+    $("h7 .body-fat-start").html("a Decrease of " + comp2 + " lbs");
+  } else if (comp2 === 0) {
+    $("h7 .body-fat-start").html("No changes ");
+  } else {
+    comp2 *= -1;
+    $("h7 .body-fat-start").html("an Increase of " + comp2 + " lbs");
+  }
+}
+
+function leanStart() {
+  var comp2 =
+    parseInt(inBodyArr[0]["LBM(LeanBodyMass)"]) -
+    parseInt(inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"]);
+  if (comp2 > 0) {
+    $("h7 .lean-mass-start").html("a Decrease of " + comp2 + " lbs");
+  } else if (comp2 === 0) {
+    $("h7 .lean-mass-start").html("No changes ");
+  } else {
+    comp2 *= -1;
+    $("h7 .lean-mass-start").html("an Increase of " + comp2 + " lbs");
+  }
+}
+
+//COMPARE body fat mass
 function compFat() {
   var comp = 0;
   if (inBodyArr.length > 2) {
@@ -171,28 +216,62 @@ function compFat() {
       parseInt(inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"]) -
       parseInt(inBodyArr[inBodyArr.length - 2]["BFM(BodyFatMass)"]);
     if (comp >= 1) {
-      $("h7 .body-fat").html("a Decrease of " + comp + "lbs");
+      $("h7 .body-fat").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
       $("h7 .body-fat").html("No changes ");
     } else {
       comp *= -1;
-      $("h7 .body-fat").html("an Increase of " + comp + "lbs");
+      $("h7 .body-fat").html("an Increase of " + comp + " lbs");
     }
   } else if (inBodyArr.length === 2) {
     comp =
       parseInt(inBodyArr[0]["BFM(BodyFatMass)"]) -
       parseInt(inBodyArr[1]["BFM(BodyFatMass)"]);
     if (comp >= 1) {
-      $("h7 .body-fat").html("a Decrease of " + comp + "lbs");
+      $("h7 .body-fat").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
       $("h7 .body-fat").html("No changes ");
     } else {
       comp *= -1;
-      $("h7 .body-fat").html("an Increase of " + comp + "lbs");
+      $("h7 .body-fat").html("an Increase of " + comp + " lbs");
     }
   } else {
     if (inBodyArr.length === 1) {
       $("h7 .body-fat").html("No changes");
+    }
+  }
+}
+
+//COMPARE lean body mass
+function compLean() {
+  var comp = 0;
+  if (inBodyArr.length > 2) {
+    comp =
+      parseInt(inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"]) -
+      parseInt(inBodyArr[inBodyArr.length - 2]["LBM(LeanBodyMass)"]);
+    if (comp >= 1) {
+      $("h7 .lean-mass").html("a Decrease of " + comp + " lbs");
+    } else if (comp === 0) {
+      $("h7 .lean-mass").html("No changes ");
+    } else {
+      comp *= -1;
+      $("h7 .lean-mass").html("an Increase of " + comp + " lbs");
+    }
+  } else if (inBodyArr.length === 2) {
+    comp =
+      parseInt(inBodyArr[0]["LBM(LeanBodyMass)"]) -
+      parseInt(inBodyArr[1]["LBM(LeanBodyMass)"]);
+    if (comp >= 1) {
+      $("h7 .lean-mass").html("a Decrease of " + comp + " lbs");
+    } else if (comp === 0) {
+      $("h7 .lean-mass").html("No changes ");
+    } else {
+      comp *= -1;
+      $("h7 .lean-mass").html("an Increase of " + comp + " lbs");
+    }
+  } else {
+    if (inBodyArr.length === 1) {
+      $("h7 .lean-mass").html("No changes");
     }
   }
 }
@@ -309,7 +388,7 @@ function pieChart() {
           },
           {
             name:
-              "Lean Body Mass" +
+              "Body Fat Mass" +
               " " +
               inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] +
               "lbs",
@@ -538,12 +617,12 @@ function leftArmChart() {
 
     series: [
       {
-        name: "Right Arm Muscle Mass",
+        name: "Left Arm Muscle Mass",
         data: lfArmMusc2
       },
 
       {
-        name: "Right Arm Fat Mass",
+        name: "Left Arm Fat Mass",
         data: lfArmFat2
       }
     ],
