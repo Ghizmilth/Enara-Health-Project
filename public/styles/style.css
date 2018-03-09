@@ -3,5 +3,17 @@ i {
 }
 
 img {
-  width: 50%;
+  width: 40%;
+}
+
+div {
+  margin: 15px;
+}
+
+h5 {
+  color: RGB(73, 183, 214);
+}
+
+.user-section {
+  margin-top: 10%;
 }

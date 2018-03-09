@@ -24,7 +24,7 @@ $(document).ready(function() {
   fetchUserData();
   setTimeout(function() {
     renderInBody();
-  }, 1000);
+  }, 1250);
 });
 
 //Gets all Datetimes from users
@@ -103,7 +103,12 @@ function renderInBody() {
   $("h5.lean-mass").html(
     inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] + " " + "lbs"
   );
+  $("h1.user-name").html(inBodyArr[0].ID);
 
+  //COMPARE weight progress
+  compWeight();
+  //COMPARE body fat mass progress
+  compFat();
   //Get Body Fatt Mass Trend Values
   bfValues();
   //Get Right Arm Fat
@@ -127,6 +132,80 @@ function renderInBody() {
   //Body Fat Mass Trend Chart
   bfTrend();
 }
+
+function compWeight() {
+  var comp = 0;
+  if (inBodyArr.length > 2) {
+    comp =
+      parseInt(inBodyArr[inBodyArr.length - 1].Weight) -
+      parseInt(inBodyArr[inBodyArr.length - 2].Weight);
+    if (comp >= 1) {
+      $("h7 .comp-weight").html("a Decrease of " + comp + "lbs");
+    } else if (comp === 0) {
+      $("h7 .comp-weight").html("No changes ");
+    } else {
+      comp *= -1;
+      $("h7 .comp-weight").html("an Increase of " + comp + "lbs");
+    }
+  } else if (inBodyArr.length === 2) {
+    comp = parseInt(inBodyArr[0].Weight) - parseInt(inBodyArr[1].Weight);
+    if (comp >= 1) {
+      $("h7 .comp-weight").html("a Decrease of " + comp + "lbs");
+    } else if (comp === 0) {
+      $("h7 .comp-weight").html("No changes ");
+    } else {
+      comp *= -1;
+      $("h7 .comp-weight").html("an Increase of " + comp + "lbs");
+    }
+  } else {
+    if (inBodyArr.length === 1) {
+      $("h7 .comp-weight").html("No changes");
+    }
+  }
+}
+
+function compFat() {
+  var comp = 0;
+  if (inBodyArr.length > 2) {
+    comp =
+      parseInt(inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"]) -
+      parseInt(inBodyArr[inBodyArr.length - 2]["BFM(BodyFatMass)"]);
+    if (comp >= 1) {
+      $("h7 .body-fat").html("a Decrease of " + comp + "lbs");
+    } else if (comp === 0) {
+      $("h7 .body-fat").html("No changes ");
+    } else {
+      comp *= -1;
+      $("h7 .body-fat").html("an Increase of " + comp + "lbs");
+    }
+  } else if (inBodyArr.length === 2) {
+    comp =
+      parseInt(inBodyArr[0]["BFM(BodyFatMass)"]) -
+      parseInt(inBodyArr[1]["BFM(BodyFatMass)"]);
+    if (comp >= 1) {
+      $("h7 .body-fat").html("a Decrease of " + comp + "lbs");
+    } else if (comp === 0) {
+      $("h7 .body-fat").html("No changes ");
+    } else {
+      comp *= -1;
+      $("h7 .body-fat").html("an Increase of " + comp + "lbs");
+    }
+  } else {
+    if (inBodyArr.length === 1) {
+      $("h7 .body-fat").html("No changes");
+    }
+  }
+}
+
+// function selectDatetime(userData) {
+//   if (userData.length > 3) {
+//     lastDatetime = userData[userData.length - 2];
+//   } else if (userData.length === 3) {
+//     lastDatetime = userData[1];
+//   } else {
+//     lastDatetime = userData[0];
+//   }
+// }
 
 //Functions to get TRENDS of values form inBody data
 
@@ -200,7 +279,7 @@ function pieChart() {
       type: "pie"
     },
     title: {
-      text: "Body Fat Mass and Lean Body Mass ratio"
+      text: "Current Body Fat Mass vs. Lean Body Mass ratio"
     },
     tooltip: {
       pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>"
@@ -210,14 +289,9 @@ function pieChart() {
         allowPointSelect: true,
         cursor: "pointer",
         dataLabels: {
-          enabled: true,
-          format: "<b>{point.name}</b>: {point.percentage:.1f} %",
-          style: {
-            color:
-              (Highcharts.theme && Highcharts.theme.contrastTextColor) ||
-              "black"
-          }
-        }
+          enabled: false
+        },
+        showInLegend: true
       }
     },
     series: [
@@ -226,11 +300,19 @@ function pieChart() {
         colorByPoint: true,
         data: [
           {
-            name: "Lean Body Mass",
+            name:
+              "Lean Body Mass" +
+              " " +
+              inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] +
+              "lbs",
             y: parseInt(inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"])
           },
           {
-            name: "Body Fat Mass",
+            name:
+              "Lean Body Mass" +
+              " " +
+              inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] +
+              "lbs",
             y: parseInt(inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"])
           }
         ]
