@@ -1,4 +1,4 @@
-var userIdInput = "daja000001";
+// var userIdInput = "daja000001";
 var enara_api = config.ApiKey;
 var enara_account = config.Account;
 var lastDatetime;
@@ -21,14 +21,20 @@ var lfArmMusc2 = [];
 
 $(document).ready(function() {
   console.log("we're live");
-  fetchUserData();
+
+  $(".btn-primary").on("click", fetchUserData);
+
+  // fetchUserData();
   setTimeout(function() {
     renderInBody();
   }, 1300);
 });
 
 //Gets all Datetimes from users
-function fetchUserData() {
+function fetchUserData(e) {
+  resetAllVar();
+  e.preventDefault();
+  userIdInput = $("#inputUserID").val();
   console.log("Retrieving Date Times by ID");
   $.ajax({
     type: "POST",
@@ -78,6 +84,29 @@ function fetchInBodyData(allDatesArr) {
       }
     });
   }
+  setTimeout(function() {
+    renderInBody();
+  }, 1300);
+}
+
+function resetAllVar() {
+  lastDatetime;
+  allDatesArr = [];
+  inBodyArr = [];
+  startDate;
+  bfValues1 = [];
+  bfValues2 = [];
+  newDatesArr = [];
+  skmValues1 = [];
+  skmValues2 = [];
+  rgArmFat1 = [];
+  rgArmMusc1 = [];
+  rgArmFat2 = [];
+  rgArmMusc2 = [];
+  lfArmFat1 = [];
+  lfArmFat2 = [];
+  lfArmMusc1 = [];
+  lfArmMusc2 = [];
 }
 
 //RENDER into the DOM
