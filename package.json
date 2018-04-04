@@ -1,0 +1,25 @@
+{
+  "name": "enara-health-project",
+  "version": "1.0.0",
+  "description": "Enara Dashboard for Patients",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ghizmilth/Enara-Health-Project.git"
+  },
+  "author": "Hidaner Ferrer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ghizmilth/Enara-Health-Project/issues"
+  },
+  "homepage": "https://github.com/Ghizmilth/Enara-Health-Project#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "pg": "^7.4.1",
+    "pg-promise": "^8.2.2"
+  }
+}

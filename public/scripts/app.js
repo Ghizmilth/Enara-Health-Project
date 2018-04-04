@@ -18,24 +18,66 @@ var lfArmFat1 = [];
 var lfArmFat2 = [];
 var lfArmMusc1 = [];
 var lfArmMusc2 = [];
+var dbData = [];
+var userAvaName;
+var userAptInfo;
+var userIdInput;
+
+// var aptible = require("./models");
 
 $(document).ready(function() {
   console.log("we're live");
 
-  $(".btn-primary").on("click", fetchUserData);
+  $.ajax({
+    method: "GET",
+    url: "/api/patient",
+    success: handleSuccess,
+    error: handleError
+  });
+
+  // $(".btn-primary").on("click", fetchUserData);
+  $(".btn-primary").on("click", userNameImg);
 
   // fetchUserData();
   setTimeout(function() {
     renderInBody();
-  }, 1300);
+  }, 1500);
 });
+
+function handleSuccess(users) {
+  console.log("aptible data collected");
+  // users.forEach(function(user) {
+  // console.log(users);
+  dbData = users.rows;
+  console.log(dbData);
+  // console.log(dbData[920].first_name + " " + dbData[920].last_name);
+  // });
+}
+
+function handleError(err) {
+  console.log("There has been an error: ", err);
+}
+
+function userNameImg(e) {
+  resetAllVar();
+  e.preventDefault();
+  userAptInfo = $("#inputUserID").val();
+  for (i = 0; i < dbData.length; i++) {
+    if (userAptInfo === dbData[i].drchrono_chart_id) {
+      userIdInput = dbData[i].drchrono_chart_id;
+      console.log(indexOf(dbData[i].drchrono_chart_id));
+    }
+  }
+  console.log(userIdInput);
+}
 
 //Gets all Datetimes from users
 function fetchUserData(e) {
   resetAllVar();
-  e.preventDefault();
+  // e.preventDefault();
   userIdInput = $("#inputUserID").val();
   console.log("Retrieving Date Times by ID");
+  // fetchAptUser(e);
   $.ajax({
     type: "POST",
     url: "https://apiusa.lookinbody.com/inbody/GetDateTimesByID",
@@ -86,7 +128,7 @@ function fetchInBodyData(allDatesArr) {
   }
   setTimeout(function() {
     renderInBody();
-  }, 1300);
+  }, 1500);
 }
 
 function resetAllVar() {
