@@ -22,6 +22,7 @@ var dbData = [];
 var userAvaName;
 var userAptInf;
 var userIdInput;
+var visitDates = [];
 
 // var aptible = require("./models");
 
@@ -46,12 +47,8 @@ $(document).ready(function() {
 
 function handleSuccess(users) {
   console.log("aptible data collected");
-  // users.forEach(function(user) {
-  // console.log(users);
   dbData = users.rows;
   console.log(dbData);
-  // console.log(dbData[920].first_name + " " + dbData[920].last_name);
-  // });
 }
 
 function handleError(err) {
@@ -65,7 +62,6 @@ function userNameImg(e) {
   userAptInfo = $("#inputUserID")
     .val()
     .toUpperCase();
-  // userAptInfo =
   console.log(userAptInfo);
   for (i = 0; i < dbData.length; i++) {
     if (userAptInfo === dbData[i].drchrono_chart_id) {
@@ -107,8 +103,8 @@ function fetchUserData() {
 //AJAX call to show json data from InBody
 function fetchInBodyData(allDatesArr) {
   console.log("starting communication for Full InBody Data");
-  var newDatesArr = allDatesArr.slice(0, -1);
-  for (i = 0; i < allDatesArr.length; i++) {
+  newDatesArr = allDatesArr.slice(0, -1);
+  for (i = 0; i < newDatesArr.length; i++) {
     $.ajax({
       async: false,
       type: "POST",
@@ -160,6 +156,7 @@ function resetAllVar() {
 
 //RENDER into the DOM
 function renderInBody() {
+  getTimeStrings();
   console.log(inBodyArr);
   console.log(inBodyArr.length);
   console.log(inBodyArr[0].DateofRegistration);
@@ -186,15 +183,23 @@ function renderInBody() {
   );
   // $("h1.user-name").html(inBodyArr[0].ID);
   $("h1.user-name").html(userIdInput.first_name + " " + userIdInput.last_name);
-  $("img.user-avatar")
-    .attr(
-      "src",
-      "https://commondatastorage.googleapis.com/enara/uploads/user/avatar/" +
-        userIdInput.id +
-        "/" +
-        userIdInput.avatar
-    )
-    .height(300);
+
+  if (userIdInput.avatar === null) {
+    $("img.user-avatar")
+      .attr("src", "/images/generic-user.png")
+      .height(300);
+  } else {
+    $("img.user-avatar")
+      .attr(
+        "src",
+        "https://commondatastorage.googleapis.com/enara/uploads/user/avatar/" +
+          userIdInput.id +
+          "/" +
+          userIdInput.avatar
+      )
+      .height(300);
+  }
+
   // .width(100);
 
   pieChart();
@@ -234,6 +239,16 @@ function renderInBody() {
   leanStart();
 }
 
+//Get times from newDatesArr to use for CHARTS
+function getTimeStrings() {
+  for (i = 0; i < newDatesArr.length; i++) {
+    visitDates.push(
+      newDatesArr[i].substring(4, 6) + "-" + newDatesArr[i].substring(0, 4)
+    );
+  }
+  console.log(visitDates);
+}
+
 //COMPARE weight
 function compWeight() {
   var comp = 0;
@@ -242,11 +257,14 @@ function compWeight() {
       parseInt(inBodyArr[inBodyArr.length - 1].Weight * 2.20462).toFixed(2) -
       parseInt(inBodyArr[inBodyArr.length - 2].Weight * 2.20462).toFixed(2);
     if (comp >= 1) {
+      $("h7 .comp-weight-last").addClass("fa-arrow-alt-circle-down");
       $("h7 .comp-weight").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
+      $("h7 .comp-weight-last").addClass("fa-meh");
       $("h7 .comp-weight").html("No changes ");
     } else {
       comp *= -1;
+      $("h7 .comp-weight-last").addClass("fa-arrow-alt-circle-up");
       $("h7 .comp-weight").html("an Increase of " + comp + " lbs");
     }
   } else if (inBodyArr.length === 2) {
@@ -254,15 +272,19 @@ function compWeight() {
       parseFloat(parseInt(inBodyArr[0].Weight) * 2.20462).toFixed(2) -
       parseFloat(parseInt(inBodyArr[1].Weight) * 2.20462).toFixed(2);
     if (comp >= 1) {
+      $("h7 .comp-weight-last").addClass("fa-arrow-alt-circle-down");
       $("h7 .comp-weight").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
+      $("h7 .comp-weight-last").addClass("fa-meh");
       $("h7 .comp-weight").html("No changes ");
     } else {
       comp *= -1;
+      $("h7 .comp-weight-last").addClass("fa-arrow-alt-circle-up");
       $("h7 .comp-weight").html("an Increase of " + comp + " lbs");
     }
   } else {
     if (inBodyArr.length === 1) {
+      $("h7 .comp-weight-last").addClass("fa-meh");
       $("h7 .comp-weight").html("No changes");
     }
   }
@@ -273,11 +295,14 @@ function weightStart() {
     parseInt(inBodyArr[0].Weight * 2.20462).toFixed(2) -
     parseInt(inBodyArr[inBodyArr.length - 1].Weight * 2.20462).toFixed(2);
   if (comp2 > 0) {
+    $("h7 .comp-weight-start1").addClass("fa-arrow-alt-circle-down");
     $("h7 .comp-weight-start").html("a Decrease of " + comp2 + " lbs");
   } else if (comp2 === 0) {
+    $("h7 .comp-weight-start1").addClass("fa-meh");
     $("h7 .comp-weight-start").html("No changes ");
   } else {
     comp2 *= -1;
+    $("h7 .comp-weight-start1").addClass("fa-arrow-alt-circle-up");
     $("h7 .comp-weight-start").html("an Increase of " + comp2 + " lbs");
   }
 }
@@ -289,11 +314,14 @@ function fatStart() {
       inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] * 2.20462
     ).toFixed(2);
   if (comp2 > 0) {
+    $("h7 .comp-fat-start1").addClass("fa-arrow-alt-circle-down");
     $("h7 .body-fat-start").html("a Decrease of " + comp2 + " lbs");
   } else if (comp2 === 0) {
+    $("h7 .comp-fat-start1").addClass("fa-meh");
     $("h7 .body-fat-start").html("No changes ");
   } else {
     comp2 *= -1;
+    $("h7 .comp-fat-start1").addClass("fa-arrow-alt-circle-up");
     $("h7 .body-fat-start").html("an Increase of " + comp2 + " lbs");
   }
 }
@@ -305,11 +333,14 @@ function leanStart() {
       inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] * 2.20462
     ).toFixed(2);
   if (comp2 > 0) {
+    $("h7 .comp-lean-start1").addClass("fa-arrow-alt-circle-down");
     $("h7 .lean-mass-start").html("a Decrease of " + comp2 + " lbs");
   } else if (comp2 === 0) {
+    $("h7 .comp-lean-start1").addClass("fa-meh");
     $("h7 .lean-mass-start").html("No changes ");
   } else {
     comp2 *= -1;
+    $("h7 .comp-lean-start1").addClass("fa-arrow-alt-circle-up");
     $("h7 .lean-mass-start").html("an Increase of " + comp2 + " lbs");
   }
 }
@@ -326,11 +357,14 @@ function compFat() {
         inBodyArr[inBodyArr.length - 2]["BFM(BodyFatMass)"] * 2.20462
       ).toFixed(2);
     if (comp >= 1) {
+      $("h7 .comp-fat-last").addClass("fa-arrow-alt-circle-down");
       $("h7 .body-fat").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
+      $("h7 .comp-fat-last").addClass("fa-meh");
       $("h7 .body-fat").html("No changes ");
     } else {
       comp *= -1;
+      $("h7 .comp-fat-last").addClass("fa-arrow-alt-circle-up");
       $("h7 .body-fat").html("an Increase of " + comp + " lbs");
     }
   } else if (inBodyArr.length === 2) {
@@ -338,15 +372,19 @@ function compFat() {
       parseInt(inBodyArr[0]["BFM(BodyFatMass)"] * 2.20462).toFixed(2) -
       parseInt(inBodyArr[1]["BFM(BodyFatMass)"] * 2.20462).toFixed(2);
     if (comp >= 1) {
+      $("h7 .comp-fat-last").addClass("fa-arrow-alt-circle-down");
       $("h7 .body-fat").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
+      $("h7 .comp-fat-last").addClass("fa-meh");
       $("h7 .body-fat").html("No changes ");
     } else {
       comp *= -1;
+      $("h7 .comp-fat-last").addClass("fa-arrow-alt-circle-up");
       $("h7 .body-fat").html("an Increase of " + comp + " lbs");
     }
   } else {
     if (inBodyArr.length === 1) {
+      $("h7 .comp-fat-last").addClass("fa-meh");
       $("h7 .body-fat").html("No changes");
     }
   }
@@ -364,11 +402,14 @@ function compLean() {
         inBodyArr[inBodyArr.length - 2]["LBM(LeanBodyMass)"] * 2.204622
       ).toFixed(2);
     if (comp >= 1) {
+      $("h7 .comp-lean-last").addClass("fa-arrow-alt-circle-down");
       $("h7 .lean-mass").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
+      $("h7 .comp-lean-last").addClass("fa-meh");
       $("h7 .lean-mass").html("No changes ");
     } else {
       comp *= -1;
+      $("h7 .comp-lean-last").addClass("fa-arrow-alt-circle-up");
       $("h7 .lean-mass").html("an Increase of " + comp + " lbs");
     }
   } else if (inBodyArr.length === 2) {
@@ -376,31 +417,23 @@ function compLean() {
       parseInt(inBodyArr[0]["LBM(LeanBodyMass)"] * 2.20462).toFixed(2) -
       parseInt(inBodyArr[1]["LBM(LeanBodyMass)"] * 2.20462).toFixed(2);
     if (comp >= 1) {
+      $("h7 .comp-lean-last").addClass("fa-arrow-alt-circle-down");
       $("h7 .lean-mass").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
+      $("h7 .comp-lean-last").addClass("fa-meh");
       $("h7 .lean-mass").html("No changes ");
     } else {
       comp *= -1;
+      $("h7 .comp-lean-last").addClass("fa-arrow-alt-circle-up");
       $("h7 .lean-mass").html("an Increase of " + comp + " lbs");
     }
   } else {
     if (inBodyArr.length === 1) {
+      $("h7 .comp-lean-last").addClass("fa-meh");
       $("h7 .lean-mass").html("No changes");
     }
   }
 }
-
-// function selectDatetime(userData) {
-//   if (userData.length > 3) {
-//     lastDatetime = userData[userData.length - 2];
-//   } else if (userData.length === 3) {
-//     lastDatetime = userData[1];
-//   } else {
-//     lastDatetime = userData[0];
-//   }
-// }
-
-//Functions to get TRENDS of values form inBody data
 
 //Body Fat Values
 function bfValues() {
@@ -492,8 +525,7 @@ function pieChart() {
             inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] * 2.20462
           ).toFixed(2) +
           "lbs"
-      ],
-      options: { responsive: true }
+      ]
     }
   });
 }
@@ -503,7 +535,7 @@ function smmLineChart1() {
   var myLineChart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      labels: visitDates,
       datasets: [
         {
           label: "Skeletal Muscle Mass",
@@ -518,6 +550,41 @@ function smmLineChart1() {
           backgroundColor: "rgb(0,0,0,0.0)"
         }
       ]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: "Skeletal Muscle and Body Fat Mass Trend"
+      },
+      tooltips: {
+        mode: "index",
+        intersect: false
+      },
+      hover: {
+        mode: "nearest",
+        intersect: true
+      },
+      scales: {
+        xAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: "Month/Year of Visit"
+            }
+          }
+        ],
+        yAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: "Lbs."
+            }
+          }
+        ]
+      }
     }
   });
 }
@@ -528,7 +595,7 @@ function bfTrend1() {
   var myLineChart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      labels: visitDates,
       datasets: [
         {
           label: "Body Fat Mass",
@@ -536,13 +603,42 @@ function bfTrend1() {
           borderColor: "#50C1E3",
           backgroundColor: "rgb(0,0,0,0.0)"
         }
-        // {
-        //   label: "Body Fat Mass",
-        //   data: bfValues2,
-        //   borderColor: "#DE6351",
-        //   backgroundColor: "rgb(0,0,0,0.0)"
-        // }
       ]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: "Body Fat Mass Trend"
+      },
+      tooltips: {
+        mode: "index",
+        intersect: false
+      },
+      hover: {
+        mode: "nearest",
+        intersect: true
+      },
+      scales: {
+        xAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: "Month/Year of Visit"
+            }
+          }
+        ],
+        yAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: "Lbs."
+            }
+          }
+        ]
+      }
     }
   });
 }
@@ -553,7 +649,7 @@ function rightArmChart() {
   var myLineChart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      labels: visitDates,
       datasets: [
         {
           label: "Right Arm Muscle Mass",
@@ -568,6 +664,41 @@ function rightArmChart() {
           backgroundColor: "rgb(0,0,0,0.0)"
         }
       ]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: "Right Arm Muscles and Fat Mass"
+      },
+      tooltips: {
+        mode: "index",
+        intersect: false
+      },
+      hover: {
+        mode: "nearest",
+        intersect: true
+      },
+      scales: {
+        xAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: "Month/Year of Visit"
+            }
+          }
+        ],
+        yAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: "Lbs."
+            }
+          }
+        ]
+      }
     }
   });
 }
@@ -578,7 +709,7 @@ function leftArmChart() {
   var myLineChart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      labels: visitDates,
       datasets: [
         {
           label: "Left Arm Muscle Mass",
@@ -593,6 +724,41 @@ function leftArmChart() {
           backgroundColor: "rgb(0,0,0,0.0)"
         }
       ]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: "Left Arm Muscles and Fat Mass"
+      },
+      tooltips: {
+        mode: "index",
+        intersect: false
+      },
+      hover: {
+        mode: "nearest",
+        intersect: true
+      },
+      scales: {
+        xAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: "Month/Year of Visit"
+            }
+          }
+        ],
+        yAxes: [
+          {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: "Lbs."
+            }
+          }
+        ]
+      }
     }
   });
 }
