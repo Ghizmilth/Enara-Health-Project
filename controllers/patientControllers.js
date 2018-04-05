@@ -5,7 +5,7 @@ let dbData = [];
 // GET
 function index(req, res) {
   client.query(
-    "SELECT drchrono_chart_id, first_name, last_name, avatar FROM public.users;",
+    "SELECT id, drchrono_chart_id, first_name, last_name, avatar FROM public.users;",
     (err, resp) => {
       if (err) throw err;
       res.json(resp);

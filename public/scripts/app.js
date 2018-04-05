@@ -20,7 +20,7 @@ var lfArmMusc1 = [];
 var lfArmMusc2 = [];
 var dbData = [];
 var userAvaName;
-var userAptInfo;
+var userAptInf;
 var userIdInput;
 
 // var aptible = require("./models");
@@ -59,30 +59,36 @@ function handleError(err) {
 }
 
 function userNameImg(e) {
-  resetAllVar();
   e.preventDefault();
-  userAptInfo = $("#inputUserID").val();
+  console.log(dbData);
+  resetAllVar();
+  userAptInfo = $("#inputUserID")
+    .val()
+    .toUpperCase();
+  // userAptInfo =
+  console.log(userAptInfo);
   for (i = 0; i < dbData.length; i++) {
     if (userAptInfo === dbData[i].drchrono_chart_id) {
-      userIdInput = dbData[i].drchrono_chart_id;
-      console.log(indexOf(dbData[i].drchrono_chart_id));
+      userIdInput = dbData[i];
+      // console.log(dbData[i].drchrono_chart_id);
     }
   }
   console.log(userIdInput);
+  fetchUserData();
 }
 
 //Gets all Datetimes from users
-function fetchUserData(e) {
-  resetAllVar();
+function fetchUserData() {
+  // resetAllVar();
   // e.preventDefault();
-  userIdInput = $("#inputUserID").val();
+  // userIdInput = $("#inputUserID").val();
   console.log("Retrieving Date Times by ID");
   // fetchAptUser(e);
   $.ajax({
     type: "POST",
     url: "https://apiusa.lookinbody.com/inbody/GetDateTimesByID",
     contentType: "application/json",
-    data: JSON.stringify({ UserID: userIdInput }),
+    data: JSON.stringify({ UserID: userIdInput.drchrono_chart_id }),
     headers: {
       "API-KEY": enara_api,
       Account: enara_account
@@ -109,7 +115,7 @@ function fetchInBodyData(allDatesArr) {
       url: "https://apiusa.lookinbody.com/InBody/GetFullInBodyDataByID",
       contentType: "application/json",
       data: JSON.stringify({
-        UserID: userIdInput,
+        UserID: userIdInput.drchrono_chart_id,
         Datetimes: newDatesArr[i]
       }),
       headers: {
@@ -149,6 +155,7 @@ function resetAllVar() {
   lfArmFat2 = [];
   lfArmMusc1 = [];
   lfArmMusc2 = [];
+  userIdInput;
 }
 
 //RENDER into the DOM
@@ -159,16 +166,38 @@ function renderInBody() {
   startDate = new Date(inBodyArr[0].DateofRegistration);
   $("h5.member-since").html(startDate.getFullYear());
   $("h5.current-weight").html(
-    inBodyArr[inBodyArr.length - 1].Weight + " " + "lbs"
+    parseFloat(inBodyArr[inBodyArr.length - 1].Weight * 2.20462).toFixed(2) +
+      " " +
+      "lbs"
   );
   $("h5.fat-mass").html(
-    inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] + " " + "lbs"
+    parseFloat(
+      inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] * 2.20462
+    ).toFixed(2) +
+      " " +
+      "lbs"
   );
   $("h5.lean-mass").html(
-    inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] + " " + "lbs"
+    parseFloat(
+      inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] * 2.20462
+    ).toFixed(2) +
+      " " +
+      "lbs"
   );
-  $("h1.user-name").html(inBodyArr[0].ID);
+  // $("h1.user-name").html(inBodyArr[0].ID);
+  $("h1.user-name").html(userIdInput.first_name + " " + userIdInput.last_name);
+  $("img.user-avatar")
+    .attr(
+      "src",
+      "https://commondatastorage.googleapis.com/enara/uploads/user/avatar/" +
+        userIdInput.id +
+        "/" +
+        userIdInput.avatar
+    )
+    .height(300);
+  // .width(100);
 
+  pieChart();
   //COMPARE weight progress
   compWeight();
   //COMPARE body fat mass progress
@@ -190,13 +219,13 @@ function renderInBody() {
   //Body Fat & Lean Mass ratio
   pieChart();
   //Skeletal mass & Fat Mass Trend
-  smmLineChart();
+  smmLineChart1();
   //Right Arm data Trend
   rightArmChart();
   //LEFT ARM data Trend
   leftArmChart();
   //Body Fat Mass Trend Chart
-  bfTrend();
+  bfTrend1();
   //COMPARE weight formula start to end
   weightStart();
   //COMPARE body fat start to end
@@ -210,8 +239,8 @@ function compWeight() {
   var comp = 0;
   if (inBodyArr.length > 2) {
     comp =
-      parseInt(inBodyArr[inBodyArr.length - 1].Weight) -
-      parseInt(inBodyArr[inBodyArr.length - 2].Weight);
+      parseInt(inBodyArr[inBodyArr.length - 1].Weight * 2.20462).toFixed(2) -
+      parseInt(inBodyArr[inBodyArr.length - 2].Weight * 2.20462).toFixed(2);
     if (comp >= 1) {
       $("h7 .comp-weight").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
@@ -221,7 +250,9 @@ function compWeight() {
       $("h7 .comp-weight").html("an Increase of " + comp + " lbs");
     }
   } else if (inBodyArr.length === 2) {
-    comp = parseInt(inBodyArr[0].Weight) - parseInt(inBodyArr[1].Weight);
+    comp =
+      parseFloat(parseInt(inBodyArr[0].Weight) * 2.20462).toFixed(2) -
+      parseFloat(parseInt(inBodyArr[1].Weight) * 2.20462).toFixed(2);
     if (comp >= 1) {
       $("h7 .comp-weight").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
@@ -239,8 +270,8 @@ function compWeight() {
 
 function weightStart() {
   var comp2 =
-    parseInt(inBodyArr[0].Weight) -
-    parseInt(inBodyArr[inBodyArr.length - 1].Weight);
+    parseInt(inBodyArr[0].Weight * 2.20462).toFixed(2) -
+    parseInt(inBodyArr[inBodyArr.length - 1].Weight * 2.20462).toFixed(2);
   if (comp2 > 0) {
     $("h7 .comp-weight-start").html("a Decrease of " + comp2 + " lbs");
   } else if (comp2 === 0) {
@@ -253,8 +284,10 @@ function weightStart() {
 
 function fatStart() {
   var comp2 =
-    parseInt(inBodyArr[0]["BFM(BodyFatMass)"]) -
-    parseInt(inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"]);
+    parseInt(inBodyArr[0]["BFM(BodyFatMass)"] * 2.20462).toFixed(2) -
+    parseInt(
+      inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] * 2.20462
+    ).toFixed(2);
   if (comp2 > 0) {
     $("h7 .body-fat-start").html("a Decrease of " + comp2 + " lbs");
   } else if (comp2 === 0) {
@@ -267,8 +300,10 @@ function fatStart() {
 
 function leanStart() {
   var comp2 =
-    parseInt(inBodyArr[0]["LBM(LeanBodyMass)"]) -
-    parseInt(inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"]);
+    parseInt(inBodyArr[0]["LBM(LeanBodyMass)"] * 2.20462).toFixed(2) -
+    parseInt(
+      inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] * 2.20462
+    ).toFixed(2);
   if (comp2 > 0) {
     $("h7 .lean-mass-start").html("a Decrease of " + comp2 + " lbs");
   } else if (comp2 === 0) {
@@ -284,8 +319,12 @@ function compFat() {
   var comp = 0;
   if (inBodyArr.length > 2) {
     comp =
-      parseInt(inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"]) -
-      parseInt(inBodyArr[inBodyArr.length - 2]["BFM(BodyFatMass)"]);
+      parseInt(
+        inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] * 2.20462
+      ).toFixed(2) -
+      parseInt(
+        inBodyArr[inBodyArr.length - 2]["BFM(BodyFatMass)"] * 2.20462
+      ).toFixed(2);
     if (comp >= 1) {
       $("h7 .body-fat").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
@@ -296,8 +335,8 @@ function compFat() {
     }
   } else if (inBodyArr.length === 2) {
     comp =
-      parseInt(inBodyArr[0]["BFM(BodyFatMass)"]) -
-      parseInt(inBodyArr[1]["BFM(BodyFatMass)"]);
+      parseInt(inBodyArr[0]["BFM(BodyFatMass)"] * 2.20462).toFixed(2) -
+      parseInt(inBodyArr[1]["BFM(BodyFatMass)"] * 2.20462).toFixed(2);
     if (comp >= 1) {
       $("h7 .body-fat").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
@@ -318,8 +357,12 @@ function compLean() {
   var comp = 0;
   if (inBodyArr.length > 2) {
     comp =
-      parseInt(inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"]) -
-      parseInt(inBodyArr[inBodyArr.length - 2]["LBM(LeanBodyMass)"]);
+      parseInt(
+        inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] * 2.20462
+      ).toFixed(2) -
+      parseInt(
+        inBodyArr[inBodyArr.length - 2]["LBM(LeanBodyMass)"] * 2.204622
+      ).toFixed(2);
     if (comp >= 1) {
       $("h7 .lean-mass").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
@@ -330,8 +373,8 @@ function compLean() {
     }
   } else if (inBodyArr.length === 2) {
     comp =
-      parseInt(inBodyArr[0]["LBM(LeanBodyMass)"]) -
-      parseInt(inBodyArr[1]["LBM(LeanBodyMass)"]);
+      parseInt(inBodyArr[0]["LBM(LeanBodyMass)"] * 2.20462).toFixed(2) -
+      parseInt(inBodyArr[1]["LBM(LeanBodyMass)"] * 2.20462).toFixed(2);
     if (comp >= 1) {
       $("h7 .lean-mass").html("a Decrease of " + comp + " lbs");
     } else if (comp === 0) {
@@ -362,7 +405,7 @@ function compLean() {
 //Body Fat Values
 function bfValues() {
   for (i = 0; i < inBodyArr.length; ++i) {
-    bfValues1.push(inBodyArr[i]["BFM(BodyFatMass)"]);
+    bfValues1.push(inBodyArr[i]["BFM(BodyFatMass)"] * 2.20462);
   }
   var newValues = bfValues1.map(function(x) {
     bfValues2.push(parseInt(x, 10));
@@ -372,7 +415,7 @@ function bfValues() {
 //Skeletal Muscle Value
 function skmValues() {
   for (i = 0; i < inBodyArr.length; ++i) {
-    skmValues1.push(inBodyArr[i]["SMM(SkeletalMuscleMass)"]);
+    skmValues1.push(inBodyArr[i]["SMM(SkeletalMuscleMass)"] * 2.20462);
   }
   var newValues = skmValues1.map(function(x) {
     skmValues2.push(parseInt(x, 10));
@@ -382,7 +425,7 @@ function skmValues() {
 //Right Arm Fat
 function rgArmFat() {
   for (i = 0; i < inBodyArr.length; ++i) {
-    rgArmFat1.push(inBodyArr[i]["BFMofRightArm"]);
+    rgArmFat1.push(inBodyArr[i]["BFMofRightArm"] * 2.20462);
   }
   var newValues = rgArmFat1.map(function(x) {
     rgArmFat2.push(parseInt(x, 10));
@@ -392,7 +435,7 @@ function rgArmFat() {
 //Right Arm Muscle
 function rgArmMusc() {
   for (i = 0; i < inBodyArr.length; ++i) {
-    rgArmMusc1.push(inBodyArr[i]["LBMofRightArm"]);
+    rgArmMusc1.push(inBodyArr[i]["LBMofRightArm"] * 2.20462);
   }
   var newValues = rgArmMusc1.map(function(x) {
     rgArmMusc2.push(parseInt(x, 10));
@@ -402,7 +445,7 @@ function rgArmMusc() {
 //Left Arm Fat
 function lfArmFat() {
   for (i = 0; i < inBodyArr.length; ++i) {
-    lfArmFat1.push(inBodyArr[i]["BFMofRightArm"]);
+    lfArmFat1.push(inBodyArr[i]["BFMofRightArm"] * 2.20462);
   }
   var newValues = lfArmFat1.map(function(x) {
     lfArmFat2.push(parseInt(x, 10));
@@ -412,7 +455,7 @@ function lfArmFat() {
 //Left Arm Muscle
 function lfArmMusc() {
   for (i = 0; i < inBodyArr.length; ++i) {
-    lfArmMusc1.push(inBodyArr[i]["LBMofRightArm"]);
+    lfArmMusc1.push(inBodyArr[i]["LBMofRightArm"] * 2.20462);
   }
   var newValues = lfArmMusc1.map(function(x) {
     lfArmMusc2.push(parseInt(x, 10));
@@ -421,115 +464,58 @@ function lfArmMusc() {
 
 //CHARTS Section
 function pieChart() {
-  Highcharts.chart("pie-chart", {
-    chart: {
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
-      plotShadow: false,
-      type: "pie"
-    },
-    title: {
-      text: "Current Body Fat Mass vs. Lean Body Mass ratio"
-    },
-    tooltip: {
-      pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>"
-    },
-    plotOptions: {
-      pie: {
-        allowPointSelect: true,
-        cursor: "pointer",
-        dataLabels: {
-          enabled: false
-        },
-        showInLegend: true
-      }
-    },
-    series: [
-      {
-        name: "Brands",
-        colorByPoint: true,
-        data: [
-          {
-            name:
-              "Lean Body Mass" +
-              " " +
-              inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] +
-              "lbs",
-            y: parseInt(inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"])
-          },
-          {
-            name:
-              "Body Fat Mass" +
-              " " +
-              inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] +
-              "lbs",
-            y: parseInt(inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"])
-          }
-        ]
-      }
-    ]
+  var ctx = document.getElementById("myPieChart");
+  var myPieChart = new Chart(ctx, {
+    type: "pie",
+    data: {
+      datasets: [
+        {
+          data: [
+            parseInt(
+              inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] * 2.20462
+            ),
+            parseInt(
+              inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] * 2.20462
+            )
+          ],
+          backgroundColor: ["#50C1E3", "#DE6351"]
+        }
+      ],
+      labels: [
+        "Lean Body Mass" +
+          (
+            inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] * 2.20462
+          ).toFixed(2) +
+          "lbs",
+        "Body Fat Mass " +
+          (
+            inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] * 2.20462
+          ).toFixed(2) +
+          "lbs"
+      ],
+      options: { responsive: true }
+    }
   });
 }
 
-//Skeletal Muscle Chart
-function smmLineChart() {
-  Highcharts.chart("smm-fm-chart", {
-    title: {
-      text: "Skeletal Muscle vs Fat Mass Trend"
-    },
-
-    subtitle: {
-      text: "Source: InBody User Records"
-    },
-
-    yAxis: {
-      title: {
-        text: "Lbs"
-      }
-    },
-    legend: {
-      layout: "vertical",
-      align: "right",
-      verticalAlign: "middle"
-    },
-
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false
-        },
-        pointStart: startDate.getFullYear()
-      }
-    },
-
-    series: [
-      {
-        name: "Skeletal Muscle Mass",
-        data: skmValues2
-      },
-      {
-        name: "",
-        data: []
-      },
-      {
-        name: "Body Fat Mass",
-        data: bfValues2
-      }
-    ],
-
-    responsive: {
-      rules: [
+function smmLineChart1() {
+  var ctx = document.getElementById("smm-fm-chart1");
+  var myLineChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      datasets: [
         {
-          condition: {
-            maxWidth: 500
-          },
-          chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom"
-            }
-          }
+          label: "Skeletal Muscle Mass",
+          data: skmValues2,
+          borderColor: "#50C1E3",
+          backgroundColor: "rgb(0,0,0,0.0)"
+        },
+        {
+          label: "Body Fat Mass",
+          data: bfValues2,
+          borderColor: "#DE6351",
+          backgroundColor: "rgb(0,0,0,0.0)"
         }
       ]
     }
@@ -537,58 +523,25 @@ function smmLineChart() {
 }
 
 //BODY FAT trends
-function bfTrend() {
-  console.log(bfValues2);
-  Highcharts.chart("bf-trend-chart", {
-    title: {
-      text: "Body Fat Trend"
-    },
-
-    subtitle: {
-      text: "Source: InBody User Records"
-    },
-
-    yAxis: {
-      title: {
-        text: "Lbs"
-      }
-    },
-    legend: {
-      layout: "vertical",
-      align: "right",
-      verticalAlign: "middle"
-    },
-
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false
-        },
-        pointStart: startDate.getFullYear()
-      }
-    },
-
-    series: [
-      {
-        name: "Body Fat Mass",
-        data: bfValues2
-      }
-    ],
-
-    responsive: {
-      rules: [
+function bfTrend1() {
+  var ctx = document.getElementById("bf-trend-chart1");
+  var myLineChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      datasets: [
         {
-          condition: {
-            maxWidth: 500
-          },
-          chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom"
-            }
-          }
+          label: "Body Fat Mass",
+          data: bfValues2,
+          borderColor: "#50C1E3",
+          backgroundColor: "rgb(0,0,0,0.0)"
         }
+        // {
+        //   label: "Body Fat Mass",
+        //   data: bfValues2,
+        //   borderColor: "#DE6351",
+        //   backgroundColor: "rgb(0,0,0,0.0)"
+        // }
       ]
     }
   });
@@ -596,59 +549,23 @@ function bfTrend() {
 
 //RIGHT arm chart
 function rightArmChart() {
-  Highcharts.chart("right-arm-chart", {
-    title: {
-      text: "Right Arm: Muscle vs. Fat Mass"
-    },
-
-    subtitle: {
-      text: "Source: InBody User Records"
-    },
-
-    yAxis: {
-      title: {
-        text: "Lbs"
-      }
-    },
-    legend: {
-      layout: "vertical",
-      align: "right",
-      verticalAlign: "middle"
-    },
-
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false
-        },
-        pointStart: startDate.getFullYear()
-      }
-    },
-
-    series: [
-      {
-        name: "Right Arm Muscle Mass",
-        data: rgArmMusc2
-      },
-      {
-        name: "Right Arm Fat Mass",
-        data: rgArmFat2
-      }
-    ],
-
-    responsive: {
-      rules: [
+  var ctx = document.getElementById("right-arm-chart");
+  var myLineChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      datasets: [
         {
-          condition: {
-            maxWidth: 500
-          },
-          chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom"
-            }
-          }
+          label: "Right Arm Muscle Mass",
+          data: rgArmMusc2,
+          borderColor: "#50C1E3",
+          backgroundColor: "rgb(0,0,0,0.0)"
+        },
+        {
+          label: "Right Arm Fat Mass",
+          data: rgArmFat2,
+          borderColor: "#DE6351",
+          backgroundColor: "rgb(0,0,0,0.0)"
         }
       ]
     }
@@ -657,60 +574,23 @@ function rightArmChart() {
 
 //LEFT arm chart
 function leftArmChart() {
-  Highcharts.chart("left-arm-chart", {
-    title: {
-      text: "Left Arm: Muscle vs. Fat Mass"
-    },
-
-    subtitle: {
-      text: "Source: InBody User Records"
-    },
-
-    yAxis: {
-      title: {
-        text: "Lbs"
-      }
-    },
-    legend: {
-      layout: "vertical",
-      align: "right",
-      verticalAlign: "middle"
-    },
-
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false
-        },
-        pointStart: startDate.getFullYear()
-      }
-    },
-
-    series: [
-      {
-        name: "Left Arm Muscle Mass",
-        data: lfArmMusc2
-      },
-
-      {
-        name: "Left Arm Fat Mass",
-        data: lfArmFat2
-      }
-    ],
-
-    responsive: {
-      rules: [
+  var ctx = document.getElementById("left-arm-chart");
+  var myLineChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      datasets: [
         {
-          condition: {
-            maxWidth: 500
-          },
-          chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom"
-            }
-          }
+          label: "Left Arm Muscle Mass",
+          data: lfArmMusc2,
+          borderColor: "#50C1E3",
+          backgroundColor: "rgb(0,0,0,0.0)"
+        },
+        {
+          label: "Left Arm Fat Mass",
+          data: lfArmFat2,
+          borderColor: "#DE6351",
+          backgroundColor: "rgb(0,0,0,0.0)"
         }
       ]
     }

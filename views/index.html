@@ -15,6 +15,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script> -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 
 
     <!-- Application Scripts -->
@@ -61,7 +62,8 @@
 <!-- User Info -->
 <div class="container user-section">
 <div class="media">
-  <img class="mr-3 user-avatar" src="/images/man.png" alt="Generic placeholder image"></img>
+  <!-- <div class="user-avatar"></div> -->
+  <img class="mr-3 user-avatar" alt="User Image Place"></img>
     <div class="media-body">
       <h1 class="display3 mt-0 user-name"></h1>
       <h5>Member of Enara Since</h5>
@@ -73,11 +75,20 @@
 <hr>
 
 <!-- User Body COmposition Results -->
-<div class="container">
+<!-- <div class="container">
     <div class="text-center">
       <h3 class="mt-0">Current Weight</h3>
       <h5 class="mt-0 current-weight"></h5>
       <div id="pie-chart" style="width:100%; height:400px;"></div>
+    </div>
+</div> -->
+
+<div class="container">
+    <div class="text-center">
+      <h3 class="mt-0">Current Weight</h3>
+      <h5 class="mt-0">Body Fat vs Lean Body Mass</h5>
+      <h5 class="mt-0 current-weight"></h5>
+      <canvas id="myPieChart" width="350" height="350"></canvas>
     </div>
 </div>
 
@@ -145,6 +156,12 @@
       <div id="smm-fm-chart" style="width:90%; height:400px;"></div>
   </div>
 
+  <div class="col-md">
+      <canvas id="smm-fm-chart1" width="350" height="350"></canvas>
+  </div>
+
+
+
 </div>
 </div>
 <hr>
@@ -154,7 +171,7 @@
     Percent Body Fat Trend
   </div> -->
   <div class="col-md">
-      <div id="bf-trend-chart" style="width:90%; height:400px;"></div>
+      <canvas id="bf-trend-chart1" width="350" height="350"></canvas>
   </div>
 </div>
 </div>
@@ -166,13 +183,13 @@
 <div class="container">
 <div class="row">
   <div class="col-md">
-      <div id="right-arm-chart" style="width:90%; height:400px;"></div>
+    <canvas id="right-arm-chart" width="350" height="350"></canvas>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md">
-      <div id="left-arm-chart" style="width:90%; height:400px;"></div>
+      <canvas id="left-arm-chart" width="350" height="350"></canvas>
   </div>
 </div>
 </div>
