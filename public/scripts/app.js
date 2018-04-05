@@ -23,6 +23,7 @@ var userAvaName;
 var userAptInf;
 var userIdInput;
 var visitDates = [];
+var foundChar = location.search;
 
 // var aptible = require("./models");
 
@@ -36,8 +37,8 @@ $(document).ready(function() {
     error: handleError
   });
 
-  // $(".btn-primary").on("click", fetchUserData);
-  $(".btn-primary").on("click", userNameImg);
+  // // $(".btn-primary").on("click", fetchUserData);
+  // $(".btn-primary").on("click", userNameImg);
 
   // fetchUserData();
   setTimeout(function() {
@@ -49,19 +50,21 @@ function handleSuccess(users) {
   console.log("aptible data collected");
   dbData = users.rows;
   console.log(dbData);
+  foundChar = foundChar.substring(11);
+  console.log(foundChar);
+  userNameImg();
 }
 
 function handleError(err) {
   console.log("There has been an error: ", err);
 }
 
-function userNameImg(e) {
-  e.preventDefault();
-  console.log(dbData);
+function userNameImg() {
   resetAllVar();
-  userAptInfo = $("#inputUserID")
-    .val()
-    .toUpperCase();
+  userAptInfo = foundChar.toUpperCase();
+  // userAptInfo = $("#inputUserID")
+  //   .val()
+  //   .toUpperCase();
   console.log(userAptInfo);
   for (i = 0; i < dbData.length; i++) {
     if (userAptInfo === dbData[i].drchrono_chart_id) {
@@ -128,9 +131,9 @@ function fetchInBodyData(allDatesArr) {
       }
     });
   }
-  setTimeout(function() {
-    renderInBody();
-  }, 1500);
+  // setTimeout(function() {
+  //   // renderInBody();
+  // }, 1500);
 }
 
 function resetAllVar() {

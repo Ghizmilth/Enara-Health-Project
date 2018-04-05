@@ -9,10 +9,6 @@ function index(req, res) {
     (err, resp) => {
       if (err) throw err;
       res.json(resp);
-      // console.log(JSON.stringify(res.rows));
-      // dbData = resp.rows;
-      // console.log(dbData + " this is the variable to export");
-
       client.end();
     }
   );

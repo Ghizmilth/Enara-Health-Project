@@ -6,11 +6,13 @@ const bodyParser = require("body-parser");
 var controllers = require("./controllers");
 
 app.use(express.static(__dirname + "/public"));
+// app.use(express.static("views"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/views/index.html");
-  // console.log(aptible.aptData + "This is the data transferred");
+  // res.render("index", { patientId: JSON.stringify(req.patientId) });
+  // res.json({ patientId: req.query.patientId });
 });
 
 app.get("/api", controllers.api.index);
