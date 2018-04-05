@@ -518,16 +518,18 @@ function pieChart() {
         }
       ],
       labels: [
-        "Lean Body Mass" +
-          (
-            inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] * 2.20462
-          ).toFixed(2) +
-          "lbs",
-        "Body Fat Mass " +
-          (
-            inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] * 2.20462
-          ).toFixed(2) +
-          "lbs"
+        "Lean Body Mass",
+        // +
+        //  (
+        //    inBodyArr[inBodyArr.length - 1]["LBM(LeanBodyMass)"] * 2.20462
+        //  ).toFixed(2) +
+        //  "lbs",
+        "Body Fat Mass "
+        // +
+        //   (
+        //     inBodyArr[inBodyArr.length - 1]["BFM(BodyFatMass)"] * 2.20462
+        //   ).toFixed(2) +
+        //   "lbs"
       ]
     }
   });

@@ -1,189 +1,177 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Enara Health</title>
 
-    <!-- Stylesheets -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/html" href="/styles/style.css">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Enara Health</title>
 
-    <!-- Vendor Scripts -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <!-- <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script> -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+  <!-- Stylesheets -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
+  <link rel="stylesheet" href="/styles/style.css">
 
-
-    <!-- Application Scripts -->
-    <script src='/scripts/config.js'></script>
-    <script src="/scripts/app.js"></script>
+  <!-- Vendor Scripts -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script> -->
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 
 
+  <!-- Application Scripts -->
+  <script src='/scripts/config.js'></script>
+  <script src="/scripts/app.js"></script>
 
-  </head>
-  <body>
-    <div class="container">
-      <div class="text-center">
-      <img src="/images/enara-logo.png" class="img-fluid" alt="Responsive image">
-        <h4>Patient Report</h4>
+
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="text-center">
+      <img src="/images/enara-logo.png" class="img-fluid enara-logo" alt="Responsive image">
+      <h4>Patient Report</h4>
     </div>
   </div>
 
   <br>
 
-<div class="render-full-report">
-</div>
+  <div class="render-full-report">
+  </div>
 
-<!-- <div class="container">
-  <div class="text-center">
-  <img src="public/images/enara-logo.png" class="img-fluid" alt="Responsive image">
-    <h4>Patient Report</h4>
-</div>
-</div> -->
-
-<!-- User Info -->
-<div class="container user-section">
-<div class="media">
-  <!-- <div class="user-avatar"></div> -->
-  <img class="mr-3 user-avatar" alt="User Image Place"></img>
-    <div class="media-body">
+  <!-- User Info -->
+  <div class="container user-section">
+    <div class="text-center">
+      <img class="user-avatar" alt="User Image Place"></img>
+    </div>
+    <div class="text-center picture-text">
       <h1 class="display3 mt-0 user-name"></h1>
       <h5>Member of Enara Since</h5>
       <h5 class="member-since"></h5>
-     </div>
-</div>
-</div>
-
-<hr>
-
-<!-- User Body COmposition Results -->
-<!-- <div class="container">
-    <div class="text-center">
-      <h3 class="mt-0">Current Weight</h3>
-      <h5 class="mt-0 current-weight"></h5>
-      <div id="pie-chart" style="width:100%; height:400px;"></div>
     </div>
-</div> -->
+  </div>
 
-<div class="container">
-    <div class="text-center">
-      <h3 class="mt-0">Current Weight</h3>
-      <h5 class="mt-0">Body Fat vs Lean Body Mass</h5>
-      <h5 class="mt-0 current-weight"></h5>
-      <canvas id="myPieChart" width="350" height="350"></canvas>
-    </div>
-</div>
+  <hr>
 
-<hr>
-
-<!-- User Mass Measurements - Lean Mass - Body fat  -->
-<div class="container">
-<!-- <h4>Weight - Body Fat - Lean Body Mass Results</h4> -->
-<div class="row">
-  <div class="col-md">
-    <div class="text-center">
-      <img class="mr-3" src="/images/weight.png" alt="Generic placeholder image">
-      <div class="media-body">
+  <!-- User Mass Measurements - Lean Mass - Body fat  -->
+  <div class="container">
+    <div class="row">
+      <div class="text-center pie-center">
         <h3 class="mt-0">Current Weight</h3>
+        <h5 class="mt-0">Body Fat vs Lean Body Mass</h5>
         <h5 class="mt-0 current-weight"></h5>
-        <br>
-        <!-- <ul> -->
-          <li><h7><i class="comp-weight-last far"></i> Since your last visit, you had <strong class="comp-weight"></strong> on your Weight.</h7></li>
-          <li><h7><i class="comp-weight-start1 far"></i> Since you started with Enara, you had <strong class="comp-weight-start"></strong> on your Weight.</h7></li>
-        <!-- </ul> -->
+        <canvas id="myPieChart" width="350" height="350"></canvas>
       </div>
     </div>
   </div>
-  <div class="col-md">
-    <div class="text-center">
-      <img class="mr-3" src="/images/body-fat.png" alt="Generic placeholder image">
-      <div class="media-body">
-        <h3 class="mt-0">Body Fat Mass</h3>
-        <h5 class="mt-0 fat-mass"></h5>
-        <br>
-        <!-- <ul> -->
-        <li><h7><i class="comp-fat-last far"></i> Since your last visit, you had <strong class="body-fat"></strong> on your Body Fat Mass.</h7></li>
-        <li><h7><i class="comp-fat-start1 far"></i> Since you started with Enara, you had <strong class="body-fat-start"></strong> on your Fat Mass.</h7></li>
-      <!-- </ul> -->
+
+  <hr>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md">
+
+          <img class="" src="/images/weight.png" alt="Generic placeholder image">
+
+            <h3 class="">Current Weight</h3>
+            <h5 class=" current-weight"></h5>
+            <br>
+            <!-- <ul> -->
+            <li>
+              <h7><i class="comp-weight-last far"></i> <strong class="comp-weight"></strong> since your last visit.</h7>
+            </li>
+            <li>
+              <h7><i class="comp-weight-start1 far"></i> <strong class="comp-weight-start"></strong> since yu started Enara.</h7>
+            </li>
+            <!-- </ul> -->
+
+
+      </div>
+      <div class="col-md">
+
+          <img class="" src="/images/body-fat.png" alt="Generic placeholder image">
+
+            <h3 class="">Body Fat Mass</h3>
+            <h5 class=" fat-mass"></h5>
+            <br>
+            <!-- <ul> -->
+            <li>
+              <h7><i class="comp-fat-last far"></i> Since your last visit, you had <strong class="body-fat"></strong> on your Body Fat Mass.</h7>
+            </li>
+            <li>
+              <h7><i class="comp-fat-start1 far"></i> Since you started with Enara, you had <strong class="body-fat-start"></strong> on your Fat Mass.</h7>
+            </li>
+            <!-- </ul> -->
+
+      </div>
+      <div class="col-md">
+
+          <img class="" src="/images/strong.png" alt="Generic placeholder image">
+
+            <h3 class="">Lean Body Mass</h3>
+            <h5 class="lean-mass"></h5>
+            <br>
+            <!-- <ul> -->
+            <li>
+              <h7><i class="comp-lean-last far"></i> Since your last visit, you had <strong class="lean-mass"></strong> on your Lean Body Mass.</h7>
+            </li>
+            <li>
+              <h7><i class="comp-lean-start1 far"></i> Since you started with Enara, you had <strong class="lean-mass-start"></strong> on your LEan BOdy Mass.</h7>
+            </li>
+            <!-- </ul> -->
+
       </div>
     </div>
   </div>
-  <div class="col-md">
-    <div class="text-center">
-      <img class="mr-3" src="/images/strong.png" alt="Generic placeholder image">
-      <div class="media-body">
-        <h3 class="mt-0">Lean Body Mass</h3>
-        <h5 class="mt-0 lean-mass"></h5>
-        <br>
-        <!-- <ul> -->
-        <li><h7><i class="comp-lean-last far"></i> Since your last visit, you had <strong class="lean-mass"></strong> on your Lean Body Mass.</h7></li>
-        <li><h7><i class="comp-lean-start1 far"></i> Since you started with Enara, you had <strong class="lean-mass-start"></strong> on your LEan BOdy Mass.</h7></li>
-      <!-- </ul> -->
+
+  <!-- Skeletal Vs Fat Mass Trend / Percent Body Fat Trend -->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md">
+        <canvas id="smm-fm-chart1" width="350" height="350"></canvas>
+      </div>
+      <div class="col-md">
+        <canvas id="bf-trend-chart1" width="350" height="350"></canvas>
       </div>
     </div>
   </div>
-</div>
-</div>
 
-<hr>
+  <hr>
 
-<!-- Skeletal Vs Fat Mass Trend / Percent Body Fat Trend -->
-
-<div class="container">
-<div class="row">
-  <!-- <div class="col-md">
-    Skeletal Muscle vs Fat Mass Trend
-  </div> -->
-  <div class="col-md">
-      <div id="smm-fm-chart" style="width:90%; height:400px;"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md">
+        <canvas id="right-arm-chart" width="350" height="350"></canvas>
+      </div>
+      <div class="col-md">
+        <canvas id="left-arm-chart" width="350" height="350"></canvas>
+      </div>
+    </div>
   </div>
 
-  <div class="col-md">
-      <canvas id="smm-fm-chart1" width="350" height="350"></canvas>
+  <hr>
+
+  <!-- RIght Arm and Left Arm Muscle vs Fat -->
+
+  <div class="container">
+    <div class="row">
+
+    </div>
+
+    <div class="row">
+      <div class="col-md">
+
+      </div>
+    </div>
   </div>
 
 
-
-</div>
-</div>
-<hr>
-<div class="container">
-<div class="row">
-  <!-- <div class="col-md">
-    Percent Body Fat Trend
-  </div> -->
-  <div class="col-md">
-      <canvas id="bf-trend-chart1" width="350" height="350"></canvas>
-  </div>
-</div>
-</div>
-
-<hr>
-
-<!-- RIght Arm and Left Arm Muscle vs Fat -->
-
-<div class="container">
-<div class="row">
-  <div class="col-md">
-    <canvas id="right-arm-chart" width="350" height="350"></canvas>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md">
-      <canvas id="left-arm-chart" width="350" height="350"></canvas>
-  </div>
-</div>
-</div>
+  <hr>
 
 
-<hr>
+</body>
 
-
-  </body>
 </html>

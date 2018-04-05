@@ -9,7 +9,7 @@ function index(req, res) {
     (err, resp) => {
       if (err) throw err;
       res.json(resp);
-      client.end();
+      // client.end();
     }
   );
 }

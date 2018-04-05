@@ -2,8 +2,14 @@ i {
   width: 300px;
 }
 
-img {
-  width: 40%;
+.user-avatar {
+  border-radius: 5%;
+  border-color: #50c1e3;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.enara-logo {
 }
 
 div {
@@ -20,4 +26,17 @@ strong {
 
 .user-section {
   margin-top: 10%;
+  margin: 0 auto;
+}
+
+.pie-center {
+  margin: 0 auto;
+}
+
+li {
+  list-style-type: none;
+}
+
+h7 {
+  text-align: left;
 }
