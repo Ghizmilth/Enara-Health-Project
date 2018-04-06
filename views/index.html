@@ -9,6 +9,7 @@
   <!-- Stylesheets -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   <link rel="stylesheet" href="/styles/style.css">
 
   <!-- Vendor Scripts -->
@@ -18,6 +19,27 @@
   <!-- <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script> -->
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+  <script>
+  window['_fs_debug'] = false;
+  window['_fs_host'] = 'fullstory.com';
+  window['_fs_org'] = 'BCNGN';
+  window['_fs_namespace'] = 'FS';
+  (function(m,n,e,t,l,o,g,y){
+      if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
+      g=m[e]=function(a,b){g.q?g.q.push([a,b]):g._api(a,b);};g.q=[];
+      o=n.createElement(t);o.async=1;o.src='https://'+_fs_host+'/s/fs.js';
+      y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
+      g.identify=function(i,v){g(l,{uid:i});if(v)g(l,v)};g.setUserVars=function(v){g(l,v)};
+      y="rec";g.shutdown=function(i,v){g(y,!1)};g.restart=function(i,v){g(y,!0)};
+      y="consent";g[y]=function(a){g(y,!arguments.length||a)};
+      g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
+      g.clearUserCookie=function(){};
+  })(window,document,window['_fs_namespace'],'script','user');
+  </script>
+  <!-- start Mixpanel --><script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+mixpanel.init("YOUR TOKEN");</script><!-- end Mixpanel -->
 
 
   <!-- Application Scripts -->
@@ -71,66 +93,45 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-md">
-
-          <img class="" src="/images/weight.png" alt="Generic placeholder image">
-
-            <h3 class="">Current Weight</h3>
-            <h5 class=" current-weight"></h5>
-            <br>
-            <!-- <ul> -->
-            <li>
-              <h7><i class="comp-weight-last far"></i> <strong class="comp-weight"></strong> since your last visit.</h7>
-            </li>
-            <li>
-              <h7><i class="comp-weight-start1 far"></i> <strong class="comp-weight-start"></strong> since yu started Enara.</h7>
-            </li>
-            <!-- </ul> -->
-
-
+      <div class="col-md text-center trio">
+          <img class="trio-img" src="/images/weight.png" alt="Generic placeholder image">
+          <h3 class="">Current Weight</h3>
+          <h5 class=" current-weight"></h5>
+          <br>
+          <h7><i class="comp-weight-last far"></i></h7>
+          <h7><strong class="comp-weight"></strong> since your last visit.</h7><br>
+          <h7><i class="comp-weight-start1 far"></i></h7>
+          <h7><strong class="comp-weight-start"></strong> since you started Enara.</h7>
       </div>
-      <div class="col-md">
-
-          <img class="" src="/images/body-fat.png" alt="Generic placeholder image">
-
-            <h3 class="">Body Fat Mass</h3>
-            <h5 class=" fat-mass"></h5>
-            <br>
-            <!-- <ul> -->
-            <li>
-              <h7><i class="comp-fat-last far"></i> Since your last visit, you had <strong class="body-fat"></strong> on your Body Fat Mass.</h7>
-            </li>
-            <li>
-              <h7><i class="comp-fat-start1 far"></i> Since you started with Enara, you had <strong class="body-fat-start"></strong> on your Fat Mass.</h7>
-            </li>
-            <!-- </ul> -->
-
+      <div class="col-md text-center trio">
+          <img class="trio-img" src="/images/body-fat.png" alt="Generic placeholder image">
+          <h3 class="">Body Fat Mass</h3>
+          <h5 class=" fat-mass"></h5>
+          <br>
+          <h7><i class="comp-fat-last far"></i></h7>
+          <h7><strong class="body-fat"></strong> since your last visit.</h7><br>
+          <h7><i class="comp-fat-start1 far"></i></h7>
+          <h7><strong class="body-fat-start"></strong> since you started Enara.</h7>
       </div>
-      <div class="col-md">
-
-          <img class="" src="/images/strong.png" alt="Generic placeholder image">
-
-            <h3 class="">Lean Body Mass</h3>
-            <h5 class="lean-mass"></h5>
-            <br>
-            <!-- <ul> -->
-            <li>
-              <h7><i class="comp-lean-last far"></i> Since your last visit, you had <strong class="lean-mass"></strong> on your Lean Body Mass.</h7>
-            </li>
-            <li>
-              <h7><i class="comp-lean-start1 far"></i> Since you started with Enara, you had <strong class="lean-mass-start"></strong> on your LEan BOdy Mass.</h7>
-            </li>
-            <!-- </ul> -->
-
+      <div class="col-md text-center trio">
+          <img class="trio-img" src="/images/strong.png" alt="Generic placeholder image">
+          <h3 class="">Lean Body Mass</h3>
+          <h5 class="lean-mass"></h5>
+          <br>
+          <h7><i class="comp-lean-last far"></i></h7>
+          <h7><strong class="lean-mass"></strong> since your last visit.</h7><br>
+          <h7><i class="comp-lean-start1 far"></i></h7>
+          <h7><strong class="lean-mass-start"></strong> since you started Enara.</h7>
       </div>
     </div>
   </div>
 
+<hr>
   <!-- Skeletal Vs Fat Mass Trend / Percent Body Fat Trend -->
 
   <div class="container">
     <div class="row">
-      <div class="col-md">
+      <div class="col-md text-center">
         <canvas id="smm-fm-chart1" width="350" height="350"></canvas>
       </div>
       <div class="col-md">
@@ -140,7 +141,7 @@
   </div>
 
   <hr>
-
+  <!-- RIght Arm and Left Arm Muscle vs Fat -->
   <div class="container">
     <div class="row">
       <div class="col-md">
@@ -154,8 +155,8 @@
 
   <hr>
 
-  <!-- RIght Arm and Left Arm Muscle vs Fat -->
 
+<!-- Space for the table of comparisson -->
   <div class="container">
     <div class="row">
 

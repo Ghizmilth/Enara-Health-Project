@@ -261,14 +261,14 @@ function compWeight() {
       parseInt(inBodyArr[inBodyArr.length - 2].Weight * 2.20462).toFixed(2);
     if (comp >= 1) {
       $("h7 .comp-weight-last").addClass("fa-arrow-alt-circle-down");
-      $("h7 .comp-weight").html("a Decrease of " + comp + " lbs");
+      $("h7 .comp-weight").html(comp + " lbs");
     } else if (comp === 0) {
       $("h7 .comp-weight-last").addClass("fa-meh");
       $("h7 .comp-weight").html("No changes ");
     } else {
       comp *= -1;
       $("h7 .comp-weight-last").addClass("fa-arrow-alt-circle-up");
-      $("h7 .comp-weight").html("an Increase of " + comp + " lbs");
+      $("h7 .comp-weight").html(comp + " lbs");
     }
   } else if (inBodyArr.length === 2) {
     comp =
@@ -276,14 +276,14 @@ function compWeight() {
       parseFloat(parseInt(inBodyArr[1].Weight) * 2.20462).toFixed(2);
     if (comp >= 1) {
       $("h7 .comp-weight-last").addClass("fa-arrow-alt-circle-down");
-      $("h7 .comp-weight").html("a Decrease of " + comp + " lbs");
+      $("h7 .comp-weight").html(comp + " lbs");
     } else if (comp === 0) {
       $("h7 .comp-weight-last").addClass("fa-meh");
       $("h7 .comp-weight").html("No changes ");
     } else {
       comp *= -1;
       $("h7 .comp-weight-last").addClass("fa-arrow-alt-circle-up");
-      $("h7 .comp-weight").html("an Increase of " + comp + " lbs");
+      $("h7 .comp-weight").html(comp + " lbs");
     }
   } else {
     if (inBodyArr.length === 1) {
@@ -299,14 +299,14 @@ function weightStart() {
     parseInt(inBodyArr[inBodyArr.length - 1].Weight * 2.20462).toFixed(2);
   if (comp2 > 0) {
     $("h7 .comp-weight-start1").addClass("fa-arrow-alt-circle-down");
-    $("h7 .comp-weight-start").html("a Decrease of " + comp2 + " lbs");
+    $("h7 .comp-weight-start").html(comp2 + " lbs");
   } else if (comp2 === 0) {
     $("h7 .comp-weight-start1").addClass("fa-meh");
     $("h7 .comp-weight-start").html("No changes ");
   } else {
     comp2 *= -1;
     $("h7 .comp-weight-start1").addClass("fa-arrow-alt-circle-up");
-    $("h7 .comp-weight-start").html("an Increase of " + comp2 + " lbs");
+    $("h7 .comp-weight-start").html(comp2 + " lbs");
   }
 }
 
@@ -318,14 +318,14 @@ function fatStart() {
     ).toFixed(2);
   if (comp2 > 0) {
     $("h7 .comp-fat-start1").addClass("fa-arrow-alt-circle-down");
-    $("h7 .body-fat-start").html("a Decrease of " + comp2 + " lbs");
+    $("h7 .body-fat-start").html(comp2 + " lbs");
   } else if (comp2 === 0) {
     $("h7 .comp-fat-start1").addClass("fa-meh");
     $("h7 .body-fat-start").html("No changes ");
   } else {
     comp2 *= -1;
     $("h7 .comp-fat-start1").addClass("fa-arrow-alt-circle-up");
-    $("h7 .body-fat-start").html("an Increase of " + comp2 + " lbs");
+    $("h7 .body-fat-start").html(comp2 + " lbs");
   }
 }
 
@@ -337,14 +337,14 @@ function leanStart() {
     ).toFixed(2);
   if (comp2 > 0) {
     $("h7 .comp-lean-start1").addClass("fa-arrow-alt-circle-down");
-    $("h7 .lean-mass-start").html("a Decrease of " + comp2 + " lbs");
+    $("h7 .lean-mass-start").html(comp2 + " lbs");
   } else if (comp2 === 0) {
     $("h7 .comp-lean-start1").addClass("fa-meh");
     $("h7 .lean-mass-start").html("No changes ");
   } else {
     comp2 *= -1;
     $("h7 .comp-lean-start1").addClass("fa-arrow-alt-circle-up");
-    $("h7 .lean-mass-start").html("an Increase of " + comp2 + " lbs");
+    $("h7 .lean-mass-start").html(comp2 + " lbs");
   }
 }
 
@@ -361,14 +361,14 @@ function compFat() {
       ).toFixed(2);
     if (comp >= 1) {
       $("h7 .comp-fat-last").addClass("fa-arrow-alt-circle-down");
-      $("h7 .body-fat").html("a Decrease of " + comp + " lbs");
+      $("h7 .body-fat").html(comp + " lbs");
     } else if (comp === 0) {
       $("h7 .comp-fat-last").addClass("fa-meh");
       $("h7 .body-fat").html("No changes ");
     } else {
       comp *= -1;
       $("h7 .comp-fat-last").addClass("fa-arrow-alt-circle-up");
-      $("h7 .body-fat").html("an Increase of " + comp + " lbs");
+      $("h7 .body-fat").html(comp + " lbs");
     }
   } else if (inBodyArr.length === 2) {
     comp =
@@ -376,14 +376,14 @@ function compFat() {
       parseInt(inBodyArr[1]["BFM(BodyFatMass)"] * 2.20462).toFixed(2);
     if (comp >= 1) {
       $("h7 .comp-fat-last").addClass("fa-arrow-alt-circle-down");
-      $("h7 .body-fat").html("a Decrease of " + comp + " lbs");
+      $("h7 .body-fat").html(comp + " lbs");
     } else if (comp === 0) {
       $("h7 .comp-fat-last").addClass("fa-meh");
       $("h7 .body-fat").html("No changes ");
     } else {
       comp *= -1;
       $("h7 .comp-fat-last").addClass("fa-arrow-alt-circle-up");
-      $("h7 .body-fat").html("an Increase of " + comp + " lbs");
+      $("h7 .body-fat").html(comp + " lbs");
     }
   } else {
     if (inBodyArr.length === 1) {
@@ -406,14 +406,14 @@ function compLean() {
       ).toFixed(2);
     if (comp >= 1) {
       $("h7 .comp-lean-last").addClass("fa-arrow-alt-circle-down");
-      $("h7 .lean-mass").html("a Decrease of " + comp + " lbs");
+      $("h7 .lean-mass").html(comp + " lbs");
     } else if (comp === 0) {
       $("h7 .comp-lean-last").addClass("fa-meh");
       $("h7 .lean-mass").html("No changes ");
     } else {
       comp *= -1;
       $("h7 .comp-lean-last").addClass("fa-arrow-alt-circle-up");
-      $("h7 .lean-mass").html("an Increase of " + comp + " lbs");
+      $("h7 .lean-mass").html(comp + " lbs");
     }
   } else if (inBodyArr.length === 2) {
     comp =
@@ -421,14 +421,14 @@ function compLean() {
       parseInt(inBodyArr[1]["LBM(LeanBodyMass)"] * 2.20462).toFixed(2);
     if (comp >= 1) {
       $("h7 .comp-lean-last").addClass("fa-arrow-alt-circle-down");
-      $("h7 .lean-mass").html("a Decrease of " + comp + " lbs");
+      $("h7 .lean-mass").html(comp + " lbs");
     } else if (comp === 0) {
       $("h7 .comp-lean-last").addClass("fa-meh");
       $("h7 .lean-mass").html("No changes ");
     } else {
       comp *= -1;
       $("h7 .comp-lean-last").addClass("fa-arrow-alt-circle-up");
-      $("h7 .lean-mass").html("an Increase of " + comp + " lbs");
+      $("h7 .lean-mass").html(comp + " lbs");
     }
   } else {
     if (inBodyArr.length === 1) {

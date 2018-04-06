@@ -1,7 +1,6 @@
-i {
-  width: 300px;
+body {
+  font-family: "Lato", sans-serif;
 }
-
 .user-avatar {
   border-radius: 5%;
   border-color: #50c1e3;
@@ -37,6 +36,11 @@ li {
   list-style-type: none;
 }
 
-h7 {
-  text-align: left;
+.trio {
+  border: 2px solid #50c1e3;
+  border-radius: 5%;
+}
+
+.trio-img {
+  width: 50%;
 }
