@@ -1,6 +1,7 @@
-// var userIdInput = "daja000001";
 var enara_api = config.ApiKey;
 var enara_account = config.Account;
+// var enara_api = process.env.IB_APIKEY;
+// var enara_account = process.env.IB_ACCOUNT;
 var lastDatetime;
 var allDatesArr = [];
 var inBodyArr = [];
@@ -25,6 +26,7 @@ var userIdInput;
 var visitDates = [];
 var foundChar = location.search;
 
+
 // var aptible = require("./models");
 
 $(document).ready(function() {
@@ -37,6 +39,7 @@ $(document).ready(function() {
     error: handleError
   });
 
+  // foundChar = foundChar.substring(11);
   // // $(".btn-primary").on("click", fetchUserData);
   // $(".btn-primary").on("click", userNameImg);
 
@@ -87,7 +90,7 @@ function fetchUserData() {
     type: "POST",
     url: "https://apiusa.lookinbody.com/inbody/GetDateTimesByID",
     contentType: "application/json",
-    data: JSON.stringify({ UserID: userIdInput.drchrono_chart_id }),
+    data: JSON.stringify({ UserID: foundChar}),//userIdInput.drchrono_chart_id }),
     headers: {
       "API-KEY": enara_api,
       Account: enara_account
@@ -114,7 +117,7 @@ function fetchInBodyData(allDatesArr) {
       url: "https://apiusa.lookinbody.com/InBody/GetFullInBodyDataByID",
       contentType: "application/json",
       data: JSON.stringify({
-        UserID: userIdInput.drchrono_chart_id,
+        UserID: foundChar,//userIdInput.drchrono_chart_id,
         Datetimes: newDatesArr[i]
       }),
       headers: {

@@ -44,3 +44,7 @@ li {
 .trio-img {
   width: 50%;
 }
+
+canvas {
+  margin-right: -10px;
+}
