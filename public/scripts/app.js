@@ -608,7 +608,7 @@ function bfTrend1() {
         {
           label: "Body Fat Mass",
           data: bfValues2,
-          borderColor: "#50C1E3",
+          borderColor: "#DE6351",
           backgroundColor: "rgb(0,0,0,0.0)"
         }
       ]

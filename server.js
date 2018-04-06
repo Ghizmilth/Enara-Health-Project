@@ -27,11 +27,11 @@ app.get("/api", controllers.api.index);
 app.get("/api/patient", (req, res) => {
 
   const client = new Client({
-    host: process.env.DB_HOST,
-    port: 5432,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    host: process.env.EDB_HOST,
+    port: process.env.EDB_PORT,
+    database: process.env.EDB_NAME,
+    user: process.env.EDB_USER,
+    password: process.env.EDB_PASSWORD,
     ssl: true
   });
 
